@@ -5,10 +5,9 @@ This repository is meant to be
 * A container for all the datasets used
 
 ## Repository Organisation
-.
-├── README.md
-├── data		<- contains all datasets used
-├── models		<- contains refactored models
-│   └── __init__.py	<- needed to import as package
-└── notebooks		<- all notebooks
-
+      .
+    ├── README.md
+    ├── data		            <- contains all datasets used
+    ├── models		        <- contains refactored models
+    │   └── __init__.py	    <- needed to import as package
+    └── notebooks		        <- all notebooks
