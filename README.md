@@ -7,7 +7,7 @@ This repository is meant to be
 ## Repository Organisation
     ├── README.md
     ├── data		            <- contains all datasets used
-    ├── figures		            <- contains generated plots & figures
+    ├── figures		        <- contains generated plots & figures
     ├── models		        <- contains refactored models
     │   └── __init__.py	    <- needed to import as package
     └── notebooks		        <- all notebooks
