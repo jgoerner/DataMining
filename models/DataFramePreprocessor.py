@@ -169,9 +169,11 @@ class DataFramePreprocessor(object):
         """
         
         # Inverse continuous columns
-        dt_con = pd.DataFrame(self.scaler.inverse_transform(attributes[self.con_columns]),
-                                                           index = attributes[self.con_columns].index,
-                                                           columns = attributes[self.con_columns].columns)
+        dt_con = attributes[self.con_columns]
+        if self.normalize:
+            dt_con = pd.DataFrame(self.scaler.inverse_transform(dt_con),
+                                  index = dt_con.index,
+                                  columns = dt_con.columns)
         
         # Inverse label dataframe
         dt_label = None
