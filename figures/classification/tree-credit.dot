@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label="checking_status_no checking <= 0.5\ngini = 0.42\nsamples = 1000\nvalue = [300, 700]\nclass = good", fillcolor="#399de592"] ;
+1 [label="duration <= 22.5\ngini = 0.4869\nsamples = 606\nvalue = [254, 352]\nclass = good", fillcolor="#399de547"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="credit_history_all paid <= 0.5\ngini = 0.4438\nsamples = 349\nvalue = [116, 233]\nclass = good", fillcolor="#399de580"] ;
+1 -> 2 ;
+3 [label="gini = 0.4271\nsamples = 330\nvalue = [102, 228]\nclass = good", fillcolor="#399de58d"] ;
+2 -> 3 ;
+4 [label="gini = 0.3878\nsamples = 19\nvalue = [14, 5]\nclass = bad", fillcolor="#e58139a4"] ;
+2 -> 4 ;
+5 [label="savings_status_<100 <= 0.5\ngini = 0.4973\nsamples = 257\nvalue = [138, 119]\nclass = bad", fillcolor="#e5813923"] ;
+1 -> 5 ;
+6 [label="gini = 0.4722\nsamples = 89\nvalue = [34, 55]\nclass = good", fillcolor="#399de561"] ;
+5 -> 6 ;
+7 [label="gini = 0.4717\nsamples = 168\nvalue = [104, 64]\nclass = bad", fillcolor="#e5813962"] ;
+5 -> 7 ;
+8 [label="other_payment_plans_none <= 0.5\ngini = 0.2062\nsamples = 394\nvalue = [46, 348]\nclass = good", fillcolor="#399de5dd"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="employment_unemployed <= 0.5\ngini = 0.4175\nsamples = 64\nvalue = [19, 45]\nclass = good", fillcolor="#399de593"] ;
+8 -> 9 ;
+10 [label="gini = 0.3911\nsamples = 60\nvalue = [16, 44]\nclass = good", fillcolor="#399de5a2"] ;
+9 -> 10 ;
+11 [label="gini = 0.375\nsamples = 4\nvalue = [3, 1]\nclass = bad", fillcolor="#e58139aa"] ;
+9 -> 11 ;
+12 [label="age <= 30.5\ngini = 0.1502\nsamples = 330\nvalue = [27, 303]\nclass = good", fillcolor="#399de5e8"] ;
+8 -> 12 ;
+13 [label="gini = 0.2622\nsamples = 116\nvalue = [18, 98]\nclass = good", fillcolor="#399de5d0"] ;
+12 -> 13 ;
+14 [label="gini = 0.0806\nsamples = 214\nvalue = [9, 205]\nclass = good", fillcolor="#399de5f4"] ;
+12 -> 14 ;
+}

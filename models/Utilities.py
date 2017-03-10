@@ -1,7 +1,7 @@
 # %load "../models/Utilities.py"
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.colors import BoundaryNorm, LinearSegmentedColormap
+from matplotlib.colors import BoundaryNorm, ListedColormap
 from matplotlib.cm import jet
 from IPython.display import Image
 import pydotplus
@@ -78,7 +78,7 @@ def plot_decision_regions(classifier, data, resolution=1000, legend=True, centro
     return(plt)
 
 
-def plot_decision_tree(X, y, dtree, path="tree.dot"):
+def plot_decision_tree(attribute_names, class_names, dtree, path="tree.dot"):
     """ Visualize Decision Tree structures
     
     INPUT:
@@ -103,14 +103,14 @@ def plot_decision_tree(X, y, dtree, path="tree.dot"):
     
     """
     export_graphviz(dtree,
-                    out_file=path,
-                    feature_names=X.columns,
-                    class_names=np.unique(dfp.inverse_transform_label(y)),
+                    out_file = path,
+                    feature_names = attribute_names,
+                    class_names = class_names,
                     filled = True,
                     rounded = True)
     graph = pydotplus.graph_from_dot_file(path)
-    graph.write_png(path)
-    return Image(graph.create_png(), width=500)
+    graph.write_png(path.replace(".dot", ".png"))
+    return Image(graph.create_png(), width=700)
 
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
