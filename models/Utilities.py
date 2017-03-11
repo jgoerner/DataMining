@@ -1,4 +1,3 @@
-# %load "../models/Utilities.py"
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.colors import BoundaryNorm, ListedColormap
@@ -6,10 +5,11 @@ from matplotlib.cm import jet
 from IPython.display import Image
 import pydotplus
 import itertools
-
+from sklearn.cross_validation import StratifiedKFold
+from scipy import interp
 
 def plot_decision_regions(classifier, data, resolution=1000, legend=True, centroids=None):
-    """Plotting decision regions given a classifier and data
+    """ Plotting decision regions given a classifier and data
     
     INPUT:
     ------
@@ -116,7 +116,23 @@ def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
                           cmap=plt.cm.Blues):
-    """
+    """ Print and plot the confusion matrix.
+
+    INPUT:
+    ------
+    cm:       Precalculated confusion matrix
+    classes:  Class labels
+    title:    Title of the plot
+    cmap:     Color map of the plot
+    
+    
+    OUTPUT:
+    -------
+    plt:      Colored confusion matrix plot
+    
+    
+    DESCRIPTION:
+    ------------
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
     
@@ -145,3 +161,73 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     return(plt)
+
+
+def add_noise(y, p):
+    """ Adds noise for binary one dimensional dataframes
+    
+    INPUT:
+    ------
+    y:        Dataframe containing binary labels
+    p:        Probability/Fraction of changed labels
+    
+    
+    OUTPUT:
+    -------
+    y_noisy:  Dataframe containing 'noisy' labels
+    
+    
+    DESCRIPTION:
+    ------------
+    Based on the given probability p% of the original labels are inverted
+    """
+    if int(y.shape[0]*p) == 0:
+        return None
+    y_noisy = y.copy()
+    mask = np.random.choice(np.arange(y.shape[0]), size=int(y.shape[0]*p), replace = False)
+    y_noisy.iloc[mask,:] = np.apply_along_axis(lambda bit: np.abs(1-bit), axis=1, arr=y_noisy.iloc[mask,:])
+    return y_noisy
+
+
+def roc_mean_from_cv(estimator, X, y, cv=10):
+    """ Calculate ROC's fpr & tpr mean based on CV
+    
+    INPUT:
+    ------
+    estimator:  Estimator used to train & predict
+    X:          Dataframe containing the attributes
+    y:          Dataframe containing the class labels
+    cv:         Number of CV folds, default = 10
+    
+    
+    OUTPUT:
+    -------
+    mean_fpr:   Mean false positive rate
+    mean_tpr:   Mean true positive rate
+    
+    
+    DESCRIPTION:
+    ------------
+    This method perfors k-fold CV and calculates the ROC values per iteration.
+    All ROC curves are afterwards "averaged" and mean fpr and mean tpr are returned.
+    
+    Method taken from:
+    http://scikit-learn.org/0.15/auto_examples/plot_roc_crossval.html
+    """
+    # Prepare & create CV 
+    cv = StratifiedKFold(y.values.ravel(), n_folds=10)
+    mean_tpr = 0.0
+    mean_fpr = np.linspace(0, 1, 100)
+    
+    # Perform folds
+    for i, (train, test) in enumerate(cv):
+        probas = dtree_greedy.fit(X.iloc[train, :], y.iloc[train,:]).predict_proba(X.iloc[test, :])
+        fpr, tpr, _ = roc_curve(y.iloc[test,:], probas[:,1])
+        mean_tpr += interp(mean_fpr, fpr, tpr)
+        mean_tpr[0] = 0.0
+        
+    # Average tpr by number of CVs
+    mean_tpr /= len(cv)
+    mean_tpr[-1] = 1.0
+    
+    return mean_fpr,mean_tpr
