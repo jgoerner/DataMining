@@ -5,7 +5,8 @@ from matplotlib.cm import jet
 from IPython.display import Image
 import pydotplus
 import itertools
-from sklearn.cross_validation import StratifiedKFold
+from sklearn.cross_validation import StratifiedKFold, 
+from sklearn.metrics import roc_curve
 from scipy import interp
 
 def plot_decision_regions(classifier, data, resolution=1000, legend=True, centroids=None):
@@ -221,7 +222,7 @@ def roc_mean_from_cv(estimator, X, y, cv=10):
     
     # Perform folds
     for i, (train, test) in enumerate(cv):
-        probas = dtree_greedy.fit(X.iloc[train, :], y.iloc[train,:]).predict_proba(X.iloc[test, :])
+        probas = estimator.fit(X.iloc[train, :], y.iloc[train,:]).predict_proba(X.iloc[test, :])
         fpr, tpr, _ = roc_curve(y.iloc[test,:], probas[:,1])
         mean_tpr += interp(mean_fpr, fpr, tpr)
         mean_tpr[0] = 0.0
